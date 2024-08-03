@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
@@ -15,11 +12,11 @@ namespace ConsoleApp
         {
             List<char> invalidCharacters = new List<char>();
 
-            foreach (var c in text)
+            foreach (var symbol in text)
             {
-                if (!CheckCharacterBoundaries(c))
+                if (!CheckCharacterBoundaries(symbol))
                 {
-                    invalidCharacters.Add(c);
+                    invalidCharacters.Add(symbol);
                 }
             }
 
