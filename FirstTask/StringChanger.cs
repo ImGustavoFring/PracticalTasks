@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
@@ -21,6 +19,7 @@ namespace ConsoleApp
                 return ChangeWithOddLength(text);
             }
         }
+
         private static string ChangeWithEvenLength(string text)
         {
             var result = new StringBuilder();
