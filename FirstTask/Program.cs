@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -49,6 +50,18 @@ namespace ConsoleApp
                 {
                     Console.WriteLine("В обработанной строке нет подстрок, начинающихся и заканчивающихся на гласную.");
                 }
+
+                Console.WriteLine("Выберите алгоритм сортировки (1 - Быстрая сортировка, 2 - Сортировка деревом):");
+                string? choice = Console.ReadLine();
+
+                string sortedResult = choice switch
+                {
+                    "1" => Quicksort.Sort(result),
+                    "2" => TreeSort.Sort(result),
+                    _ => throw new InvalidOperationException("Неверный выбор алгоритма.")
+                };
+
+                Console.WriteLine($"Отсортированная строка: {sortedResult}");
             }
         }
     }
