@@ -4,15 +4,25 @@
     {
         static void Main(string[] args)
         {
-            // мне объяснили сделать какое-то изменение, чтобы реализовать merge request, которого, как опции не существует
-            Run();  
+            Run();
         }
-        
-        private static void Run ()
+
+        private static void Run()
         {
-            Console.WriteLine(StringChanger.Change("a"));
-            Console.WriteLine(StringChanger.Change("abcdef"));
-            Console.WriteLine(StringChanger.Change("abcde"));
+            Console.WriteLine("Введите строку:");
+            string? input = Console.ReadLine();
+
+            var (isValid, invalidCharacters) = BoundariesChecker.Check(input);
+
+            if (!isValid)
+            {
+                Console.WriteLine($"Ошибка: введены неподходящие символы: {string.Join(", ", invalidCharacters)}");
+            }
+            else
+            {
+                string result = StringChanger.Change(input);
+                Console.WriteLine($"Обработанная строка: {result}");
+            }
         }
     }
 }
