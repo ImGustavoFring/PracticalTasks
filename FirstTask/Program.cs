@@ -29,16 +29,25 @@ namespace ConsoleApp
             else
             {
                 string result = StringChanger.Change(input);
-
                 Console.WriteLine($"Обработанная строка: {result}");
 
                 var characterCounts = CharacterCounter.CountCharacters(result);
-
-                Console.WriteLine("Количество символов обработанного текста:");
+                Console.WriteLine("Количество повторений каждого символа:");
 
                 foreach (var pair in characterCounts)
                 {
                     Console.WriteLine($"{pair.Key}: {pair.Value}");
+                }
+
+                string longestSubstring = SubstringFinder.FindLongestVowelSubstring(result);
+
+                if (longestSubstring != string.Empty)
+                {
+                    Console.WriteLine($"Самая длинная подстрока, начинающаяся и заканчивающаяся на гласную: {longestSubstring}");
+                }
+                else
+                {
+                    Console.WriteLine("В обработанной строке нет подстрок, начинающихся и заканчивающихся на гласную.");
                 }
             }
         }
