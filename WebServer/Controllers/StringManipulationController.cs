@@ -23,6 +23,9 @@ namespace WebServer.Controllers
         [HttpGet("manipulate")]
         public async Task<IActionResult> ManipulateString([FromQuery] string input)
         {
+            await Task.Delay(3000); // таким образом, мы проверям, работает ли наш middleware с конфигом
+                                    // для проверки дублируем вкладки и пытаемся одновременно отправить запросы
+
             if (string.IsNullOrEmpty(input))
             {
                 return BadRequest(new { Error = "Ошибка: строка не должна быть пустой." });

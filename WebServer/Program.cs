@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using WebServer.Middleware;
 
 namespace WebServer
 {
@@ -22,6 +23,8 @@ namespace WebServer
 
             var app = builder.Build();
 
+            var parallelLimit = builder.Configuration.GetValue<int>("Kestrel:Settings:ParallelLimit");
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -31,6 +34,8 @@ namespace WebServer
                     c.RoutePrefix = string.Empty;
                 });
             }
+
+            app.UseMiddleware<RequestLimiterMiddleware>(parallelLimit);
 
             app.UseRouting();
 
