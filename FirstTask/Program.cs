@@ -41,7 +41,9 @@ namespace ConsoleApp
             string sortedResult = await GetSortedResult(result);
             Console.WriteLine($"Отсортированная строка: {sortedResult}");
 
-            int randomIndex = await RandomNumberGenerator.GetRandomNumberAsync(result.Length);
+            int randomIndex = await RandomNumberGenerator.GetRandomNumberAsync(
+                "https://www.randomnumberapi.com/api/v1.0/", result.Length);
+
             string truncatedResult = RemoveCharacterAtIndex(result, randomIndex);
             Console.WriteLine($"Урезанная обработанная строка: {truncatedResult}");
         }

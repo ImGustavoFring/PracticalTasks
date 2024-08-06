@@ -10,12 +10,12 @@ namespace ConsoleApp
     {
         private static readonly HttpClient client = new HttpClient();
 
-        public static async Task<int> GetRandomNumberAsync(int max)
+        public static async Task<int> GetRandomNumberAsync(string url, int max)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync($"https://www.randomnumberapi.com/" +
-                    $"api/v1.0/random?min=0&max={max - 1}&count=1");
+                HttpResponseMessage response = await client.GetAsync(url +
+                    $"random?min=0&max={max - 1}&count=1");
 
                 response.EnsureSuccessStatusCode();
 
