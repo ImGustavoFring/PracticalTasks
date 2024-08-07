@@ -1,4 +1,4 @@
-﻿namespace WebServer.Middleware
+﻿namespace WebServer.Middlewares
 {
     public class RequestLimiterMiddleware
     {
