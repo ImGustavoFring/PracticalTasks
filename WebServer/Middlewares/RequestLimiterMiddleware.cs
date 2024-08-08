@@ -1,10 +1,10 @@
-﻿namespace WebServer.Middleware
+﻿namespace WebServer.Middlewares
 {
     public class RequestLimiterMiddleware
     {
         private readonly RequestDelegate _next;
         private static int _currentRequests = 0;
-        private readonly int _parallelLimit;
+        private readonly int _parallelLimit; 
 
         public RequestLimiterMiddleware(RequestDelegate next, int parallelLimit)
         {

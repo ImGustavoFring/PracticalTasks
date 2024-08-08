@@ -1,8 +1,9 @@
-﻿using BusinnessLogic.StringWork;
+﻿using BusinnessLogic.Sorting;
 using ConsoleApp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using BusinnessLogic.StringWork;
 
 namespace WebServer.Controllers
 {
@@ -21,10 +22,10 @@ namespace WebServer.Controllers
         }
 
         [HttpGet("manipulate")]
-        public async Task<IActionResult> ManipulateString([FromQuery] string input)
+        public async Task<IActionResult> ManipulateString([FromQuery] string input,
+            [FromQuery] AllSortingTypes sortType)
         {
-            await Task.Delay(3000); // таким образом, мы проверям, работает ли наш middleware с конфигом
-                                    // для проверки дублируем вкладки и пытаемся одновременно отправить запросы
+            await Task.Delay(3000); 
 
             if (string.IsNullOrEmpty(input))
             {
@@ -37,26 +38,35 @@ namespace WebServer.Controllers
             {
                 return BadRequest(new
                 {
-                    Error = $"Ошибка:" +
-                    $" введены неподходящие символы - {string.Join(", ", invalidCharacters)}"
+                    Error = $"Ошибка: введены неподходящие символы - {string.Join(", ", invalidCharacters)}"
                 });
             }
 
-            var (isValidSequences, invalidisValidSequences) = BlackListChecker.Check(_blackList, input);
+            var (isValidSequences, invalidSequences) = BlackListChecker.Check(_blackList, input);
 
             if (!isValidSequences)
             {
                 return BadRequest(new
                 {
-                    Error = $"Ошибка:" +
-                    $" строка содержит запрещенные последовательности - {string.Join(", ", invalidisValidSequences)}"
+                    Error = $"Ошибка: строка содержит запрещенные последовательности - {string.Join(", ", invalidSequences)}"
                 });
             }
 
             string result = StringChanger.Change(input);
             var characterCounts = CharacterCounter.CountCharacters(result);
             string longestSubstring = SubstringFinder.FindLongestVowelSubstring(result);
-            string sortedResult = Quicksort.Sort(result);
+
+            string sortedResult;
+
+            try
+            {
+                sortedResult = GetSortedString(result, sortType);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+
             string randomApiUrl = _configuration.GetValue<string>("RandomApi");
             int randomIndex = await RandomNumberGenerator.GetRandomNumberAsync(randomApiUrl, result.Length);
             string truncatedResult = RemoveCharacterAtIndex(result, randomIndex);
@@ -71,6 +81,16 @@ namespace WebServer.Controllers
             };
 
             return Ok(response);
+        }
+
+        private static string GetSortedString(string text, AllSortingTypes sortType)
+        {
+            return sortType switch
+            {
+                AllSortingTypes.QUICK_SORT => Quicksort.Sort(text),
+                AllSortingTypes.TREE_SORT => TreeSort.Sort(text),
+                _ => throw new ArgumentException("Ошибка: некорректный тип сортировки.", nameof(sortType))
+            };
         }
 
         private static string RemoveCharacterAtIndex(string text, int index)
